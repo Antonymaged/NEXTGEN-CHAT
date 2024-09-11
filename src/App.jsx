@@ -1,6 +1,7 @@
 import List from './components/list/List';
 import Chat from './components/chat/Chat';
 import Detail from './components/detail/Detail';
+import Panel from './components/login&signup/panel';
 import React, { useState } from 'react';
 
 const App = () => {
@@ -12,9 +13,10 @@ const App = () => {
 
   return (
     <div className='container'>
-      <List/>
+      {/* <List/>
       <Chat toggleDetail={toggleDetail} />
-      {showDetail && <Detail />}
+      {showDetail && <Detail />} */}
+      <Panel/>
     </div>
   )
 }
