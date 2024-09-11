@@ -7,7 +7,7 @@
 }
 
 body{
-  background-image: url('../public/bg4.jpg');
+  background-image: url('../public/bg5.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -21,12 +21,27 @@ body{
 }
 
 .container{
-  width: 90vw;
-  height: 90vh;
+  width: 100vw;
+  height: 100vh;
   background-color:rgba(17, 25, 40, 0.75);
   backdrop-filter: blur(19px) saturate(180%);
-  border-radius: 12px;
+  /* border-radius: 12px; */
   border: 1px solid rgba(255, 255, 255, 0.125);
   display: flex;
-  
+  overflow: scroll;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
 }

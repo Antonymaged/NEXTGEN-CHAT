@@ -1,7 +1,7 @@
 .chat{
     flex: 2;
     border-left: 1px solid #dddddd35;
-    
+
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -58,7 +58,67 @@
     .center{
         padding: 20px;
         flex: 1;
+        overflow: scroll;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
 
+        .message{
+            max-width: 70%;
+            display: flex;
+            gap: 20px;
+            
+            &.own{
+                align-self: flex-end;
+                
+                .text{
+                    p{
+                        background-color: rgba(82,131,254, 0.3);
+                    }
+                }
+            }
+
+            img{
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .text{
+                flex:1;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+
+                img{
+                    width: 100%;
+                    height: 300px;
+                    border-radius: 10px;
+                    object-fit: cover;
+                }
+    
+                p{
+                    padding: 20px;
+                    background-color: rgba(17, 25, 40, 0.3);
+                    border-radius: 10px;
+                }
+    
+                span{
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+
+    .center::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .center::-webkit-scrollbar-thumb {
+        background-color: rgba(221, 231, 255, 0.5);
+        border-radius: 10px;
     }
 
     .bottom{
@@ -71,16 +131,15 @@
         margin-top: auto;
 
         .icons{
-            display: flex;
+           display: flex;
             gap: 20px;
-
         }
         
         img{
             width: 20px;
             height: 20px;
             cursor: pointer;
-        }
+            }
 
         input{
             flex: 1;
@@ -117,7 +176,7 @@
         .send:hover{
             background-color: #7a9ffc;
             transition: 0.5s;
-            
         }
+        
     }
 }
