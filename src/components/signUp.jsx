@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./login&signup/styles.module.css";
 import { toast } from "react-toastify";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import upload from "../lib/upload";
 
 function SignUpForm() {
+  const defaultimg = "../../public/avatar.png"
   const [avatar, setAvatar] = useState({
     file: null,
-    url: ''
+    url: defaultimg
   });
+
+  const [loading,setLoading] = useState(false);
 
   const handleAvatar = (e) => {
     if (e.target.files[0]) {
@@ -41,9 +48,34 @@ function SignUpForm() {
   //   }
   // };
 
-  const handleSignup = (e) => {
-    e.preventDefault()
-    toast.success("Welcome to NEXTGEN-CHAT")
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const formData = new FormData(e.target);
+    const {username,email,password} = Object.fromEntries(formData);
+    try{
+      const res = await createUserWithEmailAndPassword(auth,email,password);
+
+      const imgURL = await upload(avatar.file);
+
+      await setDoc(doc(db,"users", res.user.uid), {
+        username,
+        email,
+        avatar: imgURL,
+        id: res.user.uid,
+        blocked: [],
+      });
+      
+      await setDoc(doc(db,"userchats", res.user.uid), {
+        chats: [],
+      });
+      toast.success("Welcome to NEXTGEN-CHAT")
+    } catch(err){
+      console.log(err);
+      toast.error(err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -76,10 +108,10 @@ function SignUpForm() {
         </div>
         <input
           type="text"
-          name="name"
-          value={state.name}
+          name="username"
+          value={state.username}
           onChange={handleChange}
-          placeholder="Name"
+          placeholder="Username"
         />
         <input
           type="email"
@@ -95,7 +127,7 @@ function SignUpForm() {
           onChange={handleChange}
           placeholder="Password"
         />
-        <button>Sign Up</button>
+        <button disabled={loading}>{loading ? "Loding":"Sign Up"}</button>
       </form>
     </div>
   );

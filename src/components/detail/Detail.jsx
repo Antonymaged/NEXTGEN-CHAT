@@ -24,7 +24,6 @@ const Detail = () => {
                 <div className="option">
                     <div className="title">
                         <span>Shared photos</span>
-                        <img src="./arrowDown.png" alt="" />
                     </div>
                     <div className="photos">
                         <div className="photoItem">

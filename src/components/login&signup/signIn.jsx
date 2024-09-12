@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import styles from "./styles.module.css";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
+import { auth } from "../../lib/firebase";
 
 function SignInForm() {
   const [state, setState] = useState({
     email: "",
     password: ""
   });
+
+  const [loading,setLoading] = useState(false);
 
   const handleChange = evt => {
     const value = evt.target.value;
@@ -26,10 +30,21 @@ function SignInForm() {
   //   }
   // };
 
-  const handleLogin = e => {
+  const handleLogin = async (e) => {
     e.preventDefault()
-    toast.success("Welcome back")
-  }
+    setLoading(true);
+    const formData = new FormData(e.target);
+    const {email ,password} = Object.fromEntries(formData);
+    try{
+      await signInWithEmailAndPassword(auth, email, password)
+      toast.success("Welcome back");
+    } catch (err){
+      toast.error(err.message)
+    } finally {
+      setLoading(false)
+    }
+    // toast.success("Welcome back")
+  };
 
   return (
     <div className={styles["form-container"] + " " + styles["sign-in-container"]}>
@@ -62,7 +77,7 @@ function SignInForm() {
           onChange={handleChange}
         />
         <a href="#">Forgot your password?</a>
-        <button>Sign In</button>
+        <button disabled={loading}>{loading ? "Loading" : "Sign In"}</button>
       </form>
     </div>
   );
