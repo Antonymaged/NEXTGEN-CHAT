@@ -2,10 +2,10 @@ import './list.css';
 import Userinfo from './userinfo/Userinfo';
 import Chatlist from './chatList/Chatlist';
 
-const List = () => {
+const List = ({ isDark, setIsDark }) => {
     return (
         <div className='list'>
-            <Userinfo/>
+            <Userinfo isDark={isDark} setIsDark={setIsDark}/>
             <Chatlist/>
         </div>
     )

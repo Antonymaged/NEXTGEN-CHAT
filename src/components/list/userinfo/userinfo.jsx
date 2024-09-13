@@ -1,9 +1,10 @@
 import './userinfo.css';
 import { useUserStore } from "../../../lib/userStore"
-import { useState } from 'react';
-import Logout from "./logout/logout"
+import React, { useState } from 'react';
+import Logout  from "./logout/logout"
+import {Light} from './Lightmode/ligtmode'
 
-const Userinfo = () => {
+const Userinfo = ({isDark, setIsDark}) => {
 
     const { currentUser } = useUserStore();
     const [logout,setLogout] = useState(false);
@@ -18,7 +19,12 @@ const Userinfo = () => {
                 <img src="./more.png" alt="" onClick={() => setLogout((prev) => !prev)}/>
                 <img src="./edit.png" alt="" />
             </div>
-            {logout && <Logout/>}
+            {
+                logout && <div className="contain">
+                    <Light isDark={isDark} setIsDark={setIsDark}/>
+                    <Logout/>
+                </div>
+            }
         </div>
     )
 }

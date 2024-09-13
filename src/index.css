@@ -23,10 +23,23 @@ body{
 .container{
   width: 100vw;
   height: 100vh;
+  /* background-color:rgba(17, 25, 40, 0.75); */
+  backdrop-filter: blur(19px) saturate(180%);
+  /* border-radius: 12px; */
+  /* border: 1px solid rgba(255, 255, 255, 0.125); */
+  display: flex;
+  overflow: scroll;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.containerdark-mode{
+  width: 100vw;
+  height: 100vh;
   background-color:rgba(17, 25, 40, 0.75);
   backdrop-filter: blur(19px) saturate(180%);
   /* border-radius: 12px; */
-  border: 1px solid rgba(255, 255, 255, 0.125);
+  /* border: 1px solid rgba(255, 255, 255, 0.125); */
   display: flex;
   overflow: scroll;
   overflow-y: hidden;

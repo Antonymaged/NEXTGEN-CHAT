@@ -10,6 +10,7 @@ import { useUserStore } from './lib/userStore';
 
 const App = () => {
 
+  const [isDark, setIsDark] = useState(false);
   const { currentUser, isloading, fetchUserInfo} = useUserStore()
 
   useEffect(()=> {
@@ -31,10 +32,10 @@ const App = () => {
   }
 
   return (
-    <div className="container">
+    <div className={`container${isDark ? "dark-mode" : ""}`}>
       {currentUser ? (
       <>
-        <List/>
+        <List isDark={isDark} setIsDark={setIsDark}/>
         <Chat toggleDetail={toggleDetail} />
         {showDetail && <Detail/>}
       </>

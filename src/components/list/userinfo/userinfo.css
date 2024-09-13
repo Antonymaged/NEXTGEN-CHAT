@@ -5,6 +5,23 @@
     align-items: center;
     justify-content: space-between;
 
+    .contain{
+        width: max-content;
+        height: max-content;
+        padding: 10px;
+        gap: 10px;
+        background-color: rgba(17, 25, 40, 0.781);
+        border-radius: 10px;
+        position: absolute;
+        top: 70px;
+        left: 175px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
     .user{
         display: flex;
         align-items: center;
