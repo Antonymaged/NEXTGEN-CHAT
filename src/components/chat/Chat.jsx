@@ -1,18 +1,38 @@
 import './chat.css';
 import EmojiPicker from 'emoji-picker-react';
 import { useRef, useState, useEffect } from 'react';
+import { onSnapshot, doc } from 'firebase/firestore';
+import { db } from '../../lib/firebase'
+import { useChatStore } from '../../lib/chatStore';
 
 const Chat = ({ toggleDetail }) => {
+    const [chat, setChat] = useState();
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
+    const { chatId } = useChatStore();
+
     const endRef = useRef(null);
 
     useEffect(() => {
         endRef.current?.scrollIntoView({behavior:'smooth'})
-    },[])
+    },[]);
+
+    useEffect(() => {
+        const unSub = onSnapshot(doc(db,"chats", chatId), (res) => {
+           setChat(res.data())
+        })
+
+        return () => {
+            unSub();
+        };
+    },[chatId]);
 
     const handle = (e) => {
         setText((prev) => prev + e.emoji)
+    }
+
+    const handleSend = () => {
+        
     }
 
     return (
@@ -32,42 +52,16 @@ const Chat = ({ toggleDetail }) => {
                 </div>
             </div>
             <div className="center">
-                <div className="message">
-                    <img src="./avatar.png" alt="" />
-                    <div className="text">
-                        <p>Hello today was so hard but i can do it</p>
-                        <span>1 min ago</span>
+                { chat?.messages?.map((message) => (
+                    <div className="message own" key={message?.createAt}>
+                        <img src="./avatar.png" alt="" />
+                        <div className="text">
+                            {message.img && <img src={message.img} alt="" />}
+                            <p>{message.text}</p>
+                            {/* <span>{message.createdAt}</span> */}
+                        </div>
                     </div>
-                </div>
-                <div className="message own">
-                    <img src="./avatar.png" alt="" />
-                    <div className="text">
-                        <p>good to hear from you , you can do it i know that</p>
-                        <span>1 min ago</span>
-                    </div>
-                </div>
-                <div className="message">
-                    <img src="./avatar.png" alt="" />
-                    <div className="text">
-                        <p>but i am really tired</p>
-                        <span>1 min ago</span>
-                    </div>
-                </div>
-                <div className="message own">
-                    <img src="./avatar.png" alt="" />
-                    <div className="text">
-                        <img src="../../../public/pharaoh.jpg" alt="" />
-                        <p>but you are a pharaoh</p>
-                        <span>1 min ago</span>
-                    </div>
-                </div>
-                <div className="message">
-                    <img src="./avatar.png" alt="" />
-                    <div className="text">
-                        <p>yes i am.</p>
-                        <span>1 min ago</span>
-                    </div>
-                </div>
+                ))}
                 <div ref={endRef}></div>
             </div>
             <div className="bottom">
@@ -83,7 +77,7 @@ const Chat = ({ toggleDetail }) => {
                         <EmojiPicker open={open} onEmojiClick={handle}/>
                     </div>
                 </div>
-                <button className='send'>Send</button>
+                <button className='send' onClick={handleSend}>Send</button>
             </div>
         </div>
     )

@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react';
 import { useUserStore } from "../../../lib/userStore";
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
+import { useChatStore } from '../../../lib/chatStore';
 
 const Chatlist = () => {
     const [addMode, setAddMode] = useState(false);
     const [chats, setChats] = useState([]);
     const { currentUser } = useUserStore();
+    const { chatId, changeChat } = useChatStore();
 
     useEffect(() => {
         if (!currentUser?.id) {
@@ -19,10 +21,10 @@ const Chatlist = () => {
         const userChatsDocRef = doc(db, 'userchats', currentUser.id);
 
         const unSub = onSnapshot(userChatsDocRef, async (res) => {
-            const items = res.data()?.chats || []; // Use optional chaining and default to an empty array
+            const items = res.data()?.chats || [];
 
             const promises = items.map(async (item) => {
-                const userdocRef = doc(db, "users", item.receiverId); // Ensure the field name is correct (receiverId)
+                const userdocRef = doc(db, "users", item.receiverId);
                 const userdocSnap = await getDoc(userdocRef);
 
                 const user = userdocSnap.data();
@@ -38,7 +40,11 @@ const Chatlist = () => {
         return () => {
             unSub();
         };
-    }, [currentUser?.id]); // Ensure dependency is valid
+    }, [currentUser?.id]);
+
+    const handleSelect = async (chat) => {
+        changeChat(chat.chatId,chat.user)
+    }
 
     return (
         <div className='chatlist'>
@@ -55,7 +61,7 @@ const Chatlist = () => {
                 />
             </div>
             {chats.map(chat => (
-                <div className='items' key={chat.chatId}>
+                <div className='items' key={chat.chatId} onClick={() => handleSelect(chat)}>
                     <img src={chat.user?.avatar || "./avatar.png"} alt="" />
                     <div className="texts">
                         <span>{chat.user?.username}</span>
