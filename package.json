@@ -3,11 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://antonymaged.github.io/",
+  "homepage": "https://antonymaged.github.io/NEXTGEN-CHAT",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "start": "react-scripts start",
+    "start": "vite start",
     "build": "vite build",
     "serve": "vite preview",
     "dev": "vite",
