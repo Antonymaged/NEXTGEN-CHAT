@@ -23,7 +23,7 @@ body{
 .container{
   width: 100vw;
   height: 100vh;
-  /* background-color:rgba(17, 25, 40, 0.75); */
+  background-color:rgba(17, 25, 40, 0.119);
   backdrop-filter: blur(19px) saturate(180%);
   /* border-radius: 12px; */
   /* border: 1px solid rgba(255, 255, 255, 0.125); */
@@ -44,6 +44,19 @@ body{
   overflow: scroll;
   overflow-y: hidden;
   overflow-x: auto;
+}
+
+.containerdark-mode::-webkit-scrollbar {
+  height: 8px;
+}
+
+.containerdark-mode::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.containerdark-mode::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
 }
 
 .container::-webkit-scrollbar {
