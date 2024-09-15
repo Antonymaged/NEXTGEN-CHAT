@@ -16,7 +16,7 @@ const Chat = ({ toggleDetail }) => {
         url: "",
     });
 
-    const { chatId, user } = useChatStore();
+    const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChatStore();
     const { currentUser } = useUserStore();
 
     const endRef = useRef(null);
@@ -103,9 +103,9 @@ const Chat = ({ toggleDetail }) => {
         <div className='chat'>
             <div className="top">
                 <div className="user">
-                    <img src="./avatar.png" alt="" />
+                    <img src={user?.avatar || "./avatar.png"} alt="" />
                     <div className="texts">
-                        <span>Antony</span>
+                        <span>{user?.username}</span>
                         <p>Say my name</p>
                     </div>
                 </div>
@@ -135,21 +135,21 @@ const Chat = ({ toggleDetail }) => {
             </div>
             <div className="bottom">
                 <div className="icons">
-                    <label htmlFor="file">
+                    <label htmlFor="file" disabled={isCurrentUserBlocked && isReceiverBlocked}>
                         <img src="./img.png" alt="" />
                     </label>
-                    <input type='file' id='file' style={{display:"none"}} onChange={handleImg}/>
+                    <input type='file' id='file' style={{display:"none"}} onChange={handleImg} disabled={isCurrentUserBlocked || isReceiverBlocked}/>
                     <img src="./camera.png" alt="" />
                     <img src="./mic.png" alt="" />
                 </div>
-                <input type="text" value={text} placeholder='Message' onChange={e=>setText(e.target.value)}/>
+                <input type="text" value={text} placeholder='Message' onChange={e=>setText(e.target.value)} disabled={isCurrentUserBlocked || isReceiverBlocked}/>
                 <div className="emoji">
                     <img src="./emoji.png" alt="" onClick={() => setOpen(prev => !prev)}/>
                     <div className="picker">
-                        <EmojiPicker open={open} onEmojiClick={handleEmoji}/>
+                        <EmojiPicker open={open && !isCurrentUserBlocked && !isReceiverBlocked} onEmojiClick={handleEmoji}/>
                     </div>
                 </div>
-                <button className='send' onClick={handleSend}>Send</button>
+                <button className='send' onClick={handleSend} disabled={isCurrentUserBlocked || isReceiverBlocked}>Send</button>
             </div>
         </div>
     )

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./login&signup/styles.module.css";
 import { toast } from "react-toastify";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import upload from "../lib/upload";
@@ -69,6 +69,7 @@ function SignUpForm() {
       await setDoc(doc(db,"userchats", res.user.uid), {
         chats: [],
       });
+      await signInWithEmailAndPassword(auth, email, password);
       toast.success("Welcome to NEXTGEN-CHAT")
     } catch(err){
       console.log(err);
@@ -127,7 +128,7 @@ function SignUpForm() {
           onChange={handleChange}
           placeholder="Password"
         />
-        <button disabled={loading}>{loading ? "Loding":"Sign Up"}</button>
+        <button disabled={loading}>{loading ? "Loading":"Sign Up"}</button>
       </form>
     </div>
   );
