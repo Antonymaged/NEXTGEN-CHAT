@@ -70,7 +70,7 @@ const Chatlist = () => {
         <div className='chatlist'>
             <div className="search">
                 <div className="searchBar">
-                    <img src="/search.png" alt="" />
+                    <img src="./search.png" alt="" />
                     <input type="text" placeholder='Search' onChange={(e) =>setInput(e.target.value)}/>
                 </div>
                 <img

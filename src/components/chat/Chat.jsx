@@ -118,7 +118,7 @@ const Chat = ({ toggleDetail }) => {
             <div className="center">
                 { chat?.messages?.map((message) => (
                     <div className={message.senderId=== currentUser.id ? "message own" : "message"} key={message?.createAt}>
-                        <img src="./avatar.png" alt="" />
+                        <img src={message.senderId=== currentUser.id ? currentUser.avatar : user.avatar} alt="" />
                         <div className="text">
                             {message.img && <img src={message.img} alt="" />}
                             <p>{message.text}</p>
