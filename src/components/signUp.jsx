@@ -93,7 +93,6 @@ function SignUpForm() {
       toast.success(`Welcome, ${user.displayName}`);
     } catch (err) {
       console.error(err);
-      toast.error(err.message);
     }
   };
 
@@ -102,7 +101,7 @@ function SignUpForm() {
       <form onSubmit={handleSignup}>
         <h1>Create Account</h1>
         <div className={styles["social-container"]}>
-          <a href="#" className={styles.social} onClick={handleGoogleSignIn}>
+          <a className={styles.social} onClick={handleGoogleSignIn}>
             <i className="fab fa-google-plus-g" />
           </a>
         </div>

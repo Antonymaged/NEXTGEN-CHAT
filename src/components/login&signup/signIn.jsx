@@ -68,7 +68,7 @@ function SignInForm() {
       <form onSubmit={handleLogin}>
         <h1>Sign in</h1>
         <div className={styles["social-container"]}>
-          <a href="#" className={styles.social} onClick={handleGoogleSignIn}>
+          <a className={styles.social} onClick={handleGoogleSignIn}>
             <i className="fab fa-google-plus-g" />
           </a>
         </div>
