@@ -51,15 +51,15 @@ function SignInForm() {
       <form onSubmit={handleLogin}>
         <h1>Sign in</h1>
         <div className={styles["social-container"]}>
-          <a href="#" className={styles.social}>
+          {/* <a href="#" className={styles.social}>
             <i className="fab fa-facebook-f" />
-          </a>
+          </a> */}
           <a href="#" className={styles.social}>
             <i className="fab fa-google-plus-g" />
           </a>
-          <a href="#" className={styles.social}>
+          {/* <a href="#" className={styles.social}>
             <i className="fab fa-linkedin-in" />
-          </a>
+          </a> */}
         </div>
         <p style={{color:"black"}}>or use your account</p>
         <input

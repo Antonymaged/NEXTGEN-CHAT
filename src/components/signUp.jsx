@@ -69,12 +69,12 @@ function SignUpForm() {
       await setDoc(doc(db,"userchats", res.user.uid), {
         chats: [],
       });
-      await signInWithEmailAndPassword(auth, email, password);
       toast.success("Welcome to NEXTGEN-CHAT")
     } catch(err){
       console.log(err);
       toast.error(err.message)
     } finally {
+      signInWithEmailAndPassword(auth, email, password);
       setLoading(false)
     }
   }
