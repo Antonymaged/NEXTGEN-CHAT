@@ -84,15 +84,15 @@ function SignUpForm() {
       <form onSubmit={handleSignup}>
         <h1>Create Account</h1>
         <div className={styles["social-container"]}>
-          <a href="#" className={styles.social}>
+          {/* <a href="#" className={styles.social}>
             <i className="fab fa-facebook-f" />
-          </a>
+          </a> */}
           <a href="#" className={styles.social}>
             <i className="fab fa-google-plus-g" />
           </a>
-          <a href="#" className={styles.social}>
+          {/* <a href="#" className={styles.social}>
             <i className="fab fa-linkedin-in" />
-          </a>
+          </a> */}
         </div>
         <p style={{color:"black"}}>or use your email for registration</p>
         <div className={styles.profilepic}>
