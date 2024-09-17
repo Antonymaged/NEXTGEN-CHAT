@@ -83,12 +83,12 @@ function SignUpForm() {
         avatar: user.photoURL || defaultimg,
         id: user.uid,
         blocked: [],
-      }, { merge: true });
+      });
 
       const userChatsRef = doc(db, "userchats", user.uid);
       await setDoc(userChatsRef, {
         chats: [],
-      }, { merge: true });
+      });
 
       toast.success(`Welcome, ${user.displayName}`);
     } catch (err) {

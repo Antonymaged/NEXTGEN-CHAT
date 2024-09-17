@@ -3,7 +3,7 @@ import styles from "./styles.module.css";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth, db } from "../../lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 function SignInForm() {
   const [state, setState] = useState({
@@ -27,19 +27,28 @@ function SignInForm() {
       const res = await signInWithPopup(auth, provider);
       const user = res.user;
 
+      // Check if the user already exists in Firestore
       const userRef = doc(db, "users", user.uid);
-      await setDoc(userRef, {
-        username: user.displayName,
-        email: user.email,
-        avatar: user.photoURL || "../../public/avatar.png", // Use a default avatar if none exists
-        id: user.uid,
-        blocked: [],
-      }, { merge: true });
+      const userSnap = await getDoc(userRef);
 
-      const userChatsRef = doc(db, "userchats", user.uid);
-      await setDoc(userChatsRef, {
-        chats: [],
-      }, { merge: true });
+      if (!userSnap.exists()) {
+        // User doesn't exist, so create a new document
+        await setDoc(userRef, {
+          username: user.displayName,
+          email: user.email,
+          avatar: user.photoURL || "../../public/avatar.png", // Use a default avatar if none exists
+          id: user.uid,
+          blocked: [],
+        });
+
+        // Initialize the user's chat list
+        const userChatsRef = doc(db, "userchats", user.uid);
+        await setDoc(userChatsRef, {
+          chats: [],
+        });
+      } else {
+        console.log('User already exists, fetching chats');
+      }
 
       toast.success(`Welcome back, ${user.displayName}`);
     } catch (err) {
@@ -87,7 +96,6 @@ function SignInForm() {
           value={state.password}
           onChange={handleChange}
         />
-        {/* <a href="#">Forgot your password?</a> */}
         <button disabled={loading}>{loading ? "Loading" : "Sign In"}</button>
       </form>
     </div>
