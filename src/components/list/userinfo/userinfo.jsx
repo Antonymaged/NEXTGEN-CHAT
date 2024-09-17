@@ -17,7 +17,6 @@ const Userinfo = ({isDark, setIsDark}) => {
             </div>
             <div className="icons">
                 <img src="./more.png" alt="" onClick={() => setLogout((prev) => !prev)}/>
-                <img src="./edit.png" alt="" />
             </div>
             {
                 logout && <div className="contain">

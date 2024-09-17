@@ -32,7 +32,6 @@ const AddUser = () => {
         const userChatsRef = collection(db, "userchats");
 
         try {
-            // Check for existing chat
             const userChatsDocRef = doc(db, "userchats", currentUser.id);
             const userChatsSnap = await getDoc(userChatsDocRef);
 
