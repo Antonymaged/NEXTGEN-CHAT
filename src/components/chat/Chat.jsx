@@ -106,7 +106,6 @@ const Chat = ({ toggleDetail }) => {
                     <img src={user?.avatar || "./avatar.png"} alt="" />
                     <div className="texts">
                         <span>{user?.username}</span>
-                        <p>Say my name</p>
                     </div>
                 </div>
                 <div className="icons">

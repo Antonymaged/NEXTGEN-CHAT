@@ -87,7 +87,7 @@ function SignInForm() {
           value={state.password}
           onChange={handleChange}
         />
-        <a href="#">Forgot your password?</a>
+        {/* <a href="#">Forgot your password?</a> */}
         <button disabled={loading}>{loading ? "Loading" : "Sign In"}</button>
       </form>
     </div>

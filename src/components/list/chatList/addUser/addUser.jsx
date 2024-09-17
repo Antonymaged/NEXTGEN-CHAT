@@ -39,23 +39,23 @@ const AddUser = () => {
                 messages: []
             });
 
-            await updateDoc(doc(userChatsRef, user.id), {
+            await setDoc(doc(userChatsRef, user.id), {
                 chats: arrayUnion({
                     chatId: newchatRef.id,
                     lastMessage:"",
                     receiverId: currentUser.id,
                     updatedAt: Date.now(),
                 }),
-            });
+            }, {merge: true});
 
-            await updateDoc(doc(userChatsRef, currentUser.id), {
+            await setDoc(doc(userChatsRef, currentUser.id), {
                 chats: arrayUnion({
                     chatId: newchatRef.id,
                     lastmessage: "",
                     receiverId: user.id,
                     updatedAt: Date.now(),
                 }),
-            });
+            }, {merge: true});
         } catch (err) {
             console.log(err);
         }
