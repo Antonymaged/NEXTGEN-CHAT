@@ -113,9 +113,7 @@ a {
             transition: 0.5s;
             color: white;
         }
-
     }
-    
 }
 
     position: absolute;
@@ -131,7 +129,7 @@ a {
     padding: 12px 15px;
     margin: 8px 0;
     width: 65%;
-    height: 50px;
+    height: 60px;
     border-radius: 50px;
     display: flex;
     flex-direction: row;

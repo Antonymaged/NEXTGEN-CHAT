@@ -1,19 +1,20 @@
 import { useState } from "react";
 import styles from "./login&signup/styles.module.css";
 import { toast } from "react-toastify";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, db } from "../lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import upload from "../lib/upload";
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 function SignUpForm() {
-  const defaultimg = "../../public/avatar.png"
+  const defaultimg = "../../public/avatar.png";
   const [avatar, setAvatar] = useState({
     file: null,
     url: defaultimg
   });
 
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleAvatar = (e) => {
     if (e.target.files[0]) {
@@ -30,7 +31,7 @@ function SignUpForm() {
     password: ""
   });
 
-  const handleChange = evt => {
+  const handleChange = (evt) => {
     const value = evt.target.value;
     setState({
       ...state,
@@ -42,43 +43,70 @@ function SignUpForm() {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.target);
-    const {username,email,password} = Object.fromEntries(formData);
-    try{
-      const res = await createUserWithEmailAndPassword(auth,email,password);
+    const { username, email, password } = Object.fromEntries(formData);
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
 
       const imgURL = await upload(avatar.file);
 
-      await setDoc(doc(db,"users", res.user.uid), {
+      await setDoc(doc(db, "users", res.user.uid), {
         username,
         email,
         avatar: imgURL,
         id: res.user.uid,
         blocked: [],
       });
-      
-      await setDoc(doc(db,"userchats", res.user.uid), {
+
+      await setDoc(doc(db, "userchats", res.user.uid), {
         chats: [],
       });
-      toast.success("Welcome to NEXTGEN-CHAT")
-    } catch(err){
+
+      toast.success("Welcome to NEXTGEN-CHAT");
+    } catch (err) {
       console.log(err);
-      toast.error(err.message)
+      toast.error(err.message);
     } finally {
       signInWithEmailAndPassword(auth, email, password);
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const res = await signInWithPopup(auth, provider);
+      const user = res.user;
+      const userRef = doc(db, "users", user.uid);
+      await setDoc(userRef, {
+        username: user.displayName,
+        email: user.email,
+        avatar: user.photoURL || defaultimg,
+        id: user.uid,
+        blocked: [],
+      }, { merge: true });
+
+      const userChatsRef = doc(db, "userchats", user.uid);
+      await setDoc(userChatsRef, {
+        chats: [],
+      }, { merge: true });
+
+      toast.success(`Welcome, ${user.displayName}`);
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message);
+    }
+  };
 
   return (
     <div className={styles["form-container"] + " " + styles["sign-up-container"]}>
       <form onSubmit={handleSignup}>
         <h1>Create Account</h1>
         <div className={styles["social-container"]}>
-          <a href="#" className={styles.social}>
+          <a href="#" className={styles.social} onClick={handleGoogleSignIn}>
             <i className="fab fa-google-plus-g" />
           </a>
         </div>
-        <p style={{color:"black"}}>or use your email for registration</p>
+        <p style={{ color: "black" }}>or use your email for registration</p>
         <div className={styles.profilepic}>
           <label htmlFor="file">
             <img src={avatar.url || "./avatar.png"} alt="" />
@@ -112,7 +140,7 @@ function SignUpForm() {
           onChange={handleChange}
           placeholder="Password"
         />
-        <button disabled={loading}>{loading ? "Loading":"Sign Up"}</button>
+        <button disabled={loading}>{loading ? "Loading" : "Sign Up"}</button>
       </form>
     </div>
   );

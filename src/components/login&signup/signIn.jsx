@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import styles from "./styles.module.css";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { toast } from "react-toastify";
-import { auth } from "../../lib/firebase";
+import { auth, db } from "../../lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 function SignInForm() {
   const [state, setState] = useState({
@@ -10,9 +11,9 @@ function SignInForm() {
     password: ""
   });
 
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = evt => {
+  const handleChange = (evt) => {
     const value = evt.target.value;
     setState({
       ...state,
@@ -20,30 +21,46 @@ function SignInForm() {
     });
   };
 
-  // const handleOnSubmit = evt => {
-  //   evt.preventDefault();
-  //   for (const key in state) {
-  //     setState({
-  //       ...state,
-  //       [key]: ""
-  //     });
-  //   }
-  // };
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const res = await signInWithPopup(auth, provider);
+      const user = res.user;
+
+      const userRef = doc(db, "users", user.uid);
+      await setDoc(userRef, {
+        username: user.displayName,
+        email: user.email,
+        avatar: user.photoURL || "../../public/avatar.png", // Use a default avatar if none exists
+        id: user.uid,
+        blocked: [],
+      }, { merge: true });
+
+      const userChatsRef = doc(db, "userchats", user.uid);
+      await setDoc(userChatsRef, {
+        chats: [],
+      }, { merge: true });
+
+      toast.success(`Welcome back, ${user.displayName}`);
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message);
+    }
+  };
 
   const handleLogin = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setLoading(true);
     const formData = new FormData(e.target);
-    const {email ,password} = Object.fromEntries(formData);
-    try{
-      await signInWithEmailAndPassword(auth, email, password)
+    const { email, password } = Object.fromEntries(formData);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
       toast.success("Welcome back");
-    } catch (err){
-      toast.error(err.message)
+    } catch (err) {
+      toast.error(err.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-    // toast.success("Welcome back")
   };
 
   return (
@@ -51,17 +68,11 @@ function SignInForm() {
       <form onSubmit={handleLogin}>
         <h1>Sign in</h1>
         <div className={styles["social-container"]}>
-          {/* <a href="#" className={styles.social}>
-            <i className="fab fa-facebook-f" />
-          </a> */}
-          <a href="#" className={styles.social}>
+          <a href="#" className={styles.social} onClick={handleGoogleSignIn}>
             <i className="fab fa-google-plus-g" />
           </a>
-          {/* <a href="#" className={styles.social}>
-            <i className="fab fa-linkedin-in" />
-          </a> */}
         </div>
-        <p style={{color:"black"}}>or use your account</p>
+        <p style={{ color: "black" }}>or use your account</p>
         <input
           type="email"
           placeholder="Email"
