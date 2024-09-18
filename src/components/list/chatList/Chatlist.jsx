@@ -90,7 +90,7 @@ const Chatlist = () => {
                     </div>
                 </div>
             ))}
-            {addMode && <AddUser />}
+            {addMode && <AddUser addMode={addMode} setAddMode={setAddMode}/>}
         </div>
     );
 };

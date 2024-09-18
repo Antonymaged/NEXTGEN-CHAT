@@ -4,7 +4,7 @@ import { db } from '../../../../lib/firebase';
 import { useState } from 'react';
 import { useUserStore } from '../../../../lib/userStore';
 
-const AddUser = () => {
+const AddUser = ({ addMode, setAddMode }) => {
     const [user, setUser] = useState(null);
     const { currentUser } = useUserStore();
 
@@ -74,6 +74,10 @@ const AddUser = () => {
         }
     };
 
+    const handleChange = () => {
+        setAddMode(!addMode);
+    }
+
     return (
         <div className="addUser">
             <form onSubmit={handleSearch}>
@@ -85,7 +89,7 @@ const AddUser = () => {
                     <img src={user.avatar || "./avatar.png"} alt="" />
                     <span>{user.username}</span>
                 </div>
-                <button onClick={handleAdd}>Add user</button>
+                <button onClick={() => {handleAdd(); handleChange();}} >Add user</button>
             </div>}
         </div>
     );

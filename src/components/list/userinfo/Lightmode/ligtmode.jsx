@@ -5,7 +5,7 @@ import Toggle from "react-toggle";
 export const Light = ({isDark, setIsDark}) => {
 
     const handleChange = () => {
-        setIsDark(!isDark); // Toggle the dark mode
+        setIsDark(!isDark);
     };
   
     return (
