@@ -163,6 +163,13 @@ const Chat = ({ toggleDetail }) => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission if you're using a form
+      handleSend();
+    }
+  };
+
   return (
     <div className='chat'>
       <div className="top">
@@ -214,14 +221,14 @@ const Chat = ({ toggleDetail }) => {
           <input type='file' id='file' style={{ display: "none" }} onChange={handleImg} disabled={isCurrentUserBlocked || isReceiverBlocked} />
           <img src="./camera.png" alt="Camera" onClick={() => setIsCameraOpen(true)} />
         </div>
-        <input type="text" value={text} placeholder='Message' onChange={e => setText(e.target.value)} disabled={isCurrentUserBlocked || isReceiverBlocked} />
+        <input type="text" value={text} onKeyDown={handleKeyDown} placeholder='Message' id='textInput' onChange={e => setText(e.target.value)} disabled={isCurrentUserBlocked || isReceiverBlocked} />
         <div className="emoji">
           <img src="./emoji.png" alt="" onClick={() => setOpen(prev => !prev)} />
           <div className="picker">
             <EmojiPicker open={open && !isCurrentUserBlocked && !isReceiverBlocked} onEmojiClick={handleEmoji} />
           </div>
         </div>
-        <button className='send' onClick={handleSend} disabled={isCurrentUserBlocked || isReceiverBlocked}>Send</button>
+        <button className='send' id='submitButton' onClick={handleSend} disabled={isCurrentUserBlocked || isReceiverBlocked}>Send</button>
       </div>
     </div>
   );
