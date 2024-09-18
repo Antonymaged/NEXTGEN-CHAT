@@ -213,7 +213,6 @@ const Chat = ({ toggleDetail }) => {
           </label>
           <input type='file' id='file' style={{ display: "none" }} onChange={handleImg} disabled={isCurrentUserBlocked || isReceiverBlocked} />
           <img src="./camera.png" alt="Camera" onClick={() => setIsCameraOpen(true)} />
-          <img src="./mic.png" alt="" />
         </div>
         <input type="text" value={text} placeholder='Message' onChange={e => setText(e.target.value)} disabled={isCurrentUserBlocked || isReceiverBlocked} />
         <div className="emoji">
