@@ -99,6 +99,19 @@ const Chat = ({ toggleDetail }) => {
         setText("");
     };
 
+    const startCall = (type) => {
+        const roomId = `chat-${chatId}`; // unique room ID based on chat
+        let callUrl = '';
+
+        if (type === 'audio') {
+            callUrl = `https://meet.jit.si/${roomId}?audioOnly=true`; // audio-only call
+        } else {
+            callUrl = `https://meet.jit.si/${roomId}`; // video call
+        }
+
+        window.open(callUrl, '_blank'); // open call in a new tab
+    };
+
     return (
         <div className='chat'>
             <div className="top">
@@ -109,9 +122,8 @@ const Chat = ({ toggleDetail }) => {
                     </div>
                 </div>
                 <div className="icons">
-                    <img src="./phone.png" alt="" />
-                    <img src="./video.png" alt="" />
-                    <img src="./info.png" alt="" onClick={ toggleDetail }/>
+                    <img src="./video.png" alt="Video Call" onClick={() => startCall('video')} />
+                    <img src="./info.png" alt="Info" onClick={ toggleDetail }/>
                 </div>
             </div>
             <div className="center">
@@ -121,7 +133,6 @@ const Chat = ({ toggleDetail }) => {
                         <div className="text">
                             {message.img && <img src={message.img} alt="" />}
                             <p>{message.text}</p>
-                            {/* <span>{message.createdAt}</span> */}
                         </div>
                     </div>
                 ))}
@@ -154,4 +165,4 @@ const Chat = ({ toggleDetail }) => {
     )
 }
 
-export default Chat
+export default Chat;
