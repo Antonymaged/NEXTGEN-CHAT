@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./login&signup/styles.module.css";
+import styles from "./login&signup/sign.module.css";
 import { toast } from "react-toastify";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, db } from "../lib/firebase";

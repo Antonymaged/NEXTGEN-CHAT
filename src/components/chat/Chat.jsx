@@ -39,7 +39,7 @@ const Chat = ({ toggleDetail }) => {
   }, [chatId]);
 
   useEffect(() => {
-    if (isCameraOpen) {
+    if (isCameraOpen && !isCurrentUserBlocked && !isReceiverBlocked) {
       navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
           if (videoRef.current) {
@@ -53,7 +53,7 @@ const Chat = ({ toggleDetail }) => {
     } else {
       stopCameraStream();
     }
-  }, [isCameraOpen]);
+  }, [isCameraOpen, isCurrentUserBlocked, isReceiverBlocked]);
 
   const stopCameraStream = () => {
     const stream = videoRef.current?.srcObject;
@@ -165,7 +165,7 @@ const Chat = ({ toggleDetail }) => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      e.preventDefault(); // Prevent form submission if you're using a form
+      e.preventDefault();
       handleSend();
     }
   };
@@ -215,11 +215,11 @@ const Chat = ({ toggleDetail }) => {
       </div>
       <div className="bottom">
         <div className="icons">
-          <label htmlFor="file" disabled={isCurrentUserBlocked && isReceiverBlocked}>
+          <label htmlFor="file" disabled={isCurrentUserBlocked || isReceiverBlocked}>
             <img src="./img.png" alt="" />
           </label>
           <input type='file' id='file' style={{ display: "none" }} onChange={handleImg} disabled={isCurrentUserBlocked || isReceiverBlocked} />
-          <img src="./camera.png" alt="Camera" onClick={() => setIsCameraOpen(true)} />
+          <img src="./camera.png" alt="Camera" onClick={() => !isCurrentUserBlocked && !isReceiverBlocked && setIsCameraOpen(true)} />
         </div>
         <input type="text" value={text} onKeyDown={handleKeyDown} placeholder='Message' id='textInput' onChange={e => setText(e.target.value)} disabled={isCurrentUserBlocked || isReceiverBlocked} />
         <div className="emoji">

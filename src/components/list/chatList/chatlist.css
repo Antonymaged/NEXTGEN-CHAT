@@ -1,6 +1,8 @@
 .chatlist{
     flex: 1;
-    /* overflow: scroll; */
+    overflow: scroll;
+    overflow-x: hidden;
+
     .search{
         display: flex;
         align-items: center;
@@ -70,4 +72,13 @@
             }
         }
     }
+}
+
+.chatlist::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chatlist::-webkit-scrollbar-thumb {
+    background-color: rgba(221, 231, 255, 0.5);
+    border-radius: 10px;
 }
